@@ -23,17 +23,37 @@ def images(S):
 
 def background():
     """
-
+    Cell 0 X = (50,300, 75,275),(50,275,75,300)
+    Cell 0 O =
+    Cell 1 X = (125,300, 150,275),(125,275,150,300)
+    Cell 1 O =
+    Cell 2 X = (200,300, 225,275),(200,275,225,300)
+    Cell 2 O =
+    Cell 3 X = (50,225,75,200),(50,200,75,225)
+    Cell 3 O =
+    Cell 4 X = (125,225,150,200),(125,200,150,225)
+    Cell 4 O =
+    Cell 5 X = (200,225,225,200),(200,200,225,225)
+    Cell 5 O = 
+    Cell 6 X = (50,150,75,125),(50,125,75,150)
+    Cell 6 O = 
+    Cell 7 X = (125,150,150,125),(125,125,150,150)
+    Cell 7 O =
+    Cell 8 X =
+    Cell 8 O = 
     """
     LEFT_VERTICAL = (100,100,100,325)
     RIGHT_VERTICAL = (175,100,175,325)
     TOP_HORIZONTAL = (25,250,250,250)
     BOTTOM_HORIZONTAL = (25,175,250,175)
-    return [LEFT_VERTICAL, RIGHT_VERTICAL, TOP_HORIZONTAL, BOTTOM_HORIZONTAL]
+    X1 = (200,150,225,125)
+    X2 = (200,125,225,150)
+    return [LEFT_VERTICAL, RIGHT_VERTICAL, TOP_HORIZONTAL, BOTTOM_HORIZONTAL,\
+            X1,X2]
 
 def contents(S):
     """
-
+    What gets drawn based on the state of the game
     """
     if S['START'] == False:
         A = [('Press to start the game',240,460,20),(200,440,280,410,YELLOW),\
