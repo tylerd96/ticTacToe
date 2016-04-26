@@ -36,8 +36,8 @@ def contents(S):
 
     """
     if S['START'] == False:
-        A = [('Press to start the game',140,460,14),(180,440,100,410,YELLOW),\
-             ('START', 140, 425, 10), ('Select the game mode:', 440, 345,20)]
+        A = [('Press to start the game',240,460,20),(200,440,280,410,YELLOW),\
+             ('START', 240, 425, 15), ('Select the game mode:', 440, 345,20)]
         if S['MODE'] == 0:
             return A + [(380,315,500,285,GREEN),('Two Player',440,300,13),\
                      (380,275,500,245,RED), ('VS. Easy AI', 440,260,13),\
@@ -64,6 +64,10 @@ def contents(S):
         return []
 
 def successor_state(S,P):
+    """if(not S['START']):"""
+        
+
+    
     return (S,P)
 
 def game_over(S):
