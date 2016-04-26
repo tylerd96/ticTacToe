@@ -13,7 +13,7 @@ def game_title():
 def initial_state():
 
 
-    return {'x':set(),'o':set(), 'MODE':GAME_MODE, 'START':GAME_START}
+    return {'x':set(),'o':set(), 'MODE':0, 'STATE':0}
 
 def images(S):
     """
@@ -46,15 +46,13 @@ def background():
     RIGHT_VERTICAL = (175,100,175,325)
     TOP_HORIZONTAL = (25,250,250,250)
     BOTTOM_HORIZONTAL = (25,175,250,175)
-    X1 = (213,138,13)
-    return [LEFT_VERTICAL, RIGHT_VERTICAL, TOP_HORIZONTAL, BOTTOM_HORIZONTAL,\
-            X1]
+    return [LEFT_VERTICAL, RIGHT_VERTICAL, TOP_HORIZONTAL, BOTTOM_HORIZONTAL]
 
 def contents(S):
     """
     What gets drawn based on the state of the game
     """
-    if S['START'] == False:
+    if S['STATE'] == False:
         A = [('Press to start the game',240,460,20),(200,440,280,410,YELLOW),\
              ('START', 240, 425, 15), ('Select the game mode:', 440, 345,20)]
         if S['MODE'] == 0:
@@ -83,7 +81,7 @@ def contents(S):
         return []
 
 def successor_state(S,P):
-    if(not S['START']):
+    if(S['STATE'] == 0):
        if(in_2Player(P)):
            S['MODE'] = 0
        if(in_Easy(P)):
@@ -93,7 +91,7 @@ def successor_state(S,P):
        if(in_Hard(P)):
             S['MODE'] = 3
        if(in_Start(P)):
-           S['START'] = True
+           S['STATE'] = 1
     else:
         print('hello')
     return S
