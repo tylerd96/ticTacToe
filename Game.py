@@ -11,9 +11,20 @@ def game_title():
     return "Tic Tac Toe"
 
 def initial_state():
-
-
-    return {'x':set(),'o':set(), 'MODE':0, 'STATE':0}
+    """
+    Returns the initial state of the game.
+    S['x'] denotes the cells that
+    player x ownes.
+    S['o'] denotes the cells that player o ownes.
+    S['MODE'] denotes the type of game the player will be playing.
+    0 is a two player game, 1 is single player vs a Easy AI, 2 is single player
+    vs a medium AI, and 3 is single player vs a Hard AI.
+    S['STATE'] denotes the current state of the game. 0 means that the player
+    is still selecting the mode of the game. 1 means that the game is currently
+    in progress, and 2 means that the game is over.
+    S['MISS'] denotes whether the previous click was an invalid input or not.
+    """
+    return {'x':set(),'o':set(), 'MODE':0, 'STATE':0, 'MISS': False}
 
 def images(S):
     """
