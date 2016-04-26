@@ -17,7 +17,7 @@ def initial_state():
 
 def images(S):
     """
-
+    Returns the image list that will be drawn on the screen of the game
     """
     return background() + contents(S)
 
@@ -83,8 +83,8 @@ def game_over(S):
     return has_won('x',S) or has_won('o',S)
 
 def has_won(P,S):
-    """won_vertically(P,S) or won_horizontally(P,S) or won_diagonally(P,S)"""
-    return False
+    
+    return won_vertically(P,S) or won_horizontally(P,S) or won_diagonally(P,S)
 
 def won_vertically(P,S):
     return {0,3,6} <= S[P] or\
@@ -99,6 +99,8 @@ def won_horizontally(P,S):
 def won_diagonally(P,S):
     return {0,4,8} <= S[P] or\
            {2,4,6} <= S[P]
+def tie(S):
+    return 9 == len(S['x'] | S['o'])
 
 def in_2Player(P):
     (x,y) = P
