@@ -36,8 +36,30 @@ def contents(S):
 
     """
     if S['START'] == False:
-        return [('Press to start the game',140,460,14),(180,440,100,410,GREEN),\
-                ('START', 140, 425, 10)]
+        A = [('Press to start the game',140,460,14),(180,440,100,410,YELLOW),\
+             ('START', 140, 425, 10), ('Select the game mode:', 440, 345,20)]
+        if S['MODE'] == 0:
+            return A + [(380,315,500,285,GREEN),('Two Player',440,300,13),\
+                     (380,275,500,245,RED), ('VS. Easy AI', 440,260,13),\
+                     (380,235,500,205,RED), ('VS. Medium AI', 440,220,13),\
+                     (380,195,500,165,RED), ('VS. Hard AI', 440,180,13)]
+        if S['MODE'] == 1:
+            return A + [(380,315,500,285,RED),('Two Player',440,300,13),\
+                     (380,275,500,245,GREEN), ('VS. Easy AI', 440,260,13),\
+                     (380,235,500,205,RED), ('VS. Medium AI', 440,220,13),\
+                     (380,195,500,165,RED), ('VS. Hard AI', 440,180,13)]
+        if S['MODE'] == 2:
+            return A + [(380,315,500,285,RED),('Two Player',440,300,13),\
+                     (380,275,500,245,RED), ('VS. Easy AI', 440,260,13),\
+                     (380,235,500,205,GREEN), ('VS. Medium AI', 440,220,13),\
+                     (380,195,500,165,RED), ('VS. Hard AI', 440,180,13)]
+        if S['MODE'] == 3:
+            return A + [(380,315,500,285,RED),('Two Player',440,300,13),\
+                     (380,275,500,245,RED), ('VS. Easy AI', 440,260,13),\
+                     (380,235,500,205,RED), ('VS. Medium AI', 440,220,13),\
+                     (380,195,500,165,GREEN), ('VS. Hard AI', 440,180,13)]
+
+        
     else:
         return []
 
