@@ -1,7 +1,7 @@
 from tpge import *
 
-X = {-1}
-O = {-2}
+GAME_START = False
+GAME_MODE = 0
 
 
 def game_title():
@@ -13,13 +13,13 @@ def game_title():
 def initial_state():
 
 
-    return (X,O)
+    return {'x':{0,3},'o':set(), 'MODE':GAME_MODE, 'START':GAME_START}
 
 def images(S):
     """
 
     """
-    return background()
+    return background() + contents(S)
 
 def background():
     """
@@ -31,8 +31,17 @@ def background():
     BOTTOM_HORIZONTAL = (25,175,250,175)
     return [LEFT_VERTICAL, RIGHT_VERTICAL, TOP_HORIZONTAL, BOTTOM_HORIZONTAL]
 
-def successor_state(S,P):
+def contents(S):
+    """
 
+    """
+    if S['START'] == False:
+        return [('Press to start the game',140,460,14),(180,440,100,410,GREEN),\
+                ('START', 140, 425, 10)]
+    else:
+        return []
+
+def successor_state(S,P):
     return (S,P)
 
 def game_over(S):
@@ -42,21 +51,18 @@ def has_won(P,S):
     return won_vertically(P,S) or won_horizontally(P,S) or won_diagonally(P,S)
 
 def won_vertically(P,S):
-    c = 0 if P == 'x' else 1
-    return {0,3,6} <= S[c] or\
-           {1,4,7} <= S[c] or\
-           {2,5,8} <= S[c]
+    return {0,3,6} <= S[P] or\
+           {1,4,7} <= S[P] or\
+           {2,5,8} <= S[P]
 
 def won_horizontally(P,S):
-    c = 0 if P == 'x' else 1
-    return {0,1,2} <= S[c] or\
-           {3,4,5} <= S[c] or\
-           {6,7,8} <= S[c]
+    return {0,1,2} <= S[P] or\
+           {3,4,5} <= S[P] or\
+           {6,7,8} <= S[P]
 
 def won_diagonally(P,S):
-    c = 0 if P == 'x' else 1
-    return {0,4,8} <= S[c] or\
-           {2,4,6} <= S[c]
+    return {0,4,8} <= S[P] or\
+           {2,4,6} <= S[P]
 
 
 
