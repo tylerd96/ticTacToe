@@ -13,7 +13,7 @@ def game_title():
 def initial_state():
 
 
-    return {'x':{0,3},'o':set(), 'MODE':GAME_MODE, 'START':GAME_START}
+    return {'x':set(),'o':set(), 'MODE':GAME_MODE, 'START':GAME_START}
 
 def images(S):
     """
@@ -35,25 +35,25 @@ def contents(S):
     """
 
     """
-    if S['START'] == False:
+    if GAME_START == False:
         A = [('Press to start the game',240,460,20),(200,440,280,410,YELLOW),\
              ('START', 240, 425, 15), ('Select the game mode:', 440, 345,20)]
-        if S['MODE'] == 0:
+        if GAME_MODE == 0:
             return A + [(380,315,500,285,GREEN),('Two Player',440,300,13),\
                      (380,275,500,245,RED), ('VS. Easy AI', 440,260,13),\
                      (380,235,500,205,RED), ('VS. Medium AI', 440,220,13),\
                      (380,195,500,165,RED), ('VS. Hard AI', 440,180,13)]
-        if S['MODE'] == 1:
+        if GAME_MODE == 1:
             return A + [(380,315,500,285,RED),('Two Player',440,300,13),\
                      (380,275,500,245,GREEN), ('VS. Easy AI', 440,260,13),\
                      (380,235,500,205,RED), ('VS. Medium AI', 440,220,13),\
                      (380,195,500,165,RED), ('VS. Hard AI', 440,180,13)]
-        if S['MODE'] == 2:
+        if GAME_MODE == 2:
             return A + [(380,315,500,285,RED),('Two Player',440,300,13),\
                      (380,275,500,245,RED), ('VS. Easy AI', 440,260,13),\
                      (380,235,500,205,GREEN), ('VS. Medium AI', 440,220,13),\
                      (380,195,500,165,RED), ('VS. Hard AI', 440,180,13)]
-        if S['MODE'] == 3:
+        if GAME_MODE == 3:
             return A + [(380,315,500,285,RED),('Two Player',440,300,13),\
                      (380,275,500,245,RED), ('VS. Easy AI', 440,260,13),\
                      (380,235,500,205,RED), ('VS. Medium AI', 440,220,13),\
@@ -64,17 +64,26 @@ def contents(S):
         return []
 
 def successor_state(S,P):
-    """if(not S['START']):"""
-        
-
-    
+    if(not GAME_START):
+       if(in_2Player(P)):
+           GAME_MODE = 0
+       if(in_Easy(P)):
+            GAME_MODE = 1
+       if(in_Med(P)):
+            GAME_MODE = 2
+       if(in_Hard(P)):
+            GAME_MODE = 3
+       print(S)
+    else:
+        print('hello')
     return (S,P)
 
 def game_over(S):
     return has_won('x',S) or has_won('o',S)
 
 def has_won(P,S):
-    return won_vertically(P,S) or won_horizontally(P,S) or won_diagonally(P,S)
+    """won_vertically(P,S) or won_horizontally(P,S) or won_diagonally(P,S)"""
+    return False
 
 def won_vertically(P,S):
     return {0,3,6} <= S[P] or\
@@ -90,6 +99,21 @@ def won_diagonally(P,S):
     return {0,4,8} <= S[P] or\
            {2,4,6} <= S[P]
 
+def in_2Player(P):
+    (x,y) = P
+    return 380 <= x <= 500 and 285 <= y <= 315
+
+def in_Easy(P):
+    (x,y) = P
+    return 380 <= x <= 500 and 245 <= y <= 275
+
+def in_Med(P):
+    (x,y) = P
+    return 380 <= x <= 500 and 205 <= y <= 235
+
+def in_Hard(P):
+    (x,y) = P
+    return 380 <= x <= 500 and 165 <= y <= 195
 
 
 run_game(game_title, initial_state, successor_state, game_over, images)
