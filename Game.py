@@ -24,32 +24,31 @@ def images(S):
 def background():
     """
     Cell 0 X = (50,300, 75,275),(50,275,75,300)
-    Cell 0 O =
+    Cell 0 O = (62,287,13)
     Cell 1 X = (125,300, 150,275),(125,275,150,300)
-    Cell 1 O =
+    Cell 1 O = (137,287,13)
     Cell 2 X = (200,300, 225,275),(200,275,225,300)
-    Cell 2 O =
+    Cell 2 O = (213,287,13)
     Cell 3 X = (50,225,75,200),(50,200,75,225)
-    Cell 3 O =
+    Cell 3 O = (62,213,13)
     Cell 4 X = (125,225,150,200),(125,200,150,225)
-    Cell 4 O =
+    Cell 4 O = (137,213,13)
     Cell 5 X = (200,225,225,200),(200,200,225,225)
-    Cell 5 O = 
+    Cell 5 O = (213,213,13)
     Cell 6 X = (50,150,75,125),(50,125,75,150)
-    Cell 6 O = 
+    Cell 6 O = (62,138,13)
     Cell 7 X = (125,150,150,125),(125,125,150,150)
-    Cell 7 O =
-    Cell 8 X =
-    Cell 8 O = 
+    Cell 7 O = (137,138,13)
+    Cell 8 X = (200,150,225,125),(200,125,225,150)
+    Cell 8 O = (213,138,13)
     """
     LEFT_VERTICAL = (100,100,100,325)
     RIGHT_VERTICAL = (175,100,175,325)
     TOP_HORIZONTAL = (25,250,250,250)
     BOTTOM_HORIZONTAL = (25,175,250,175)
-    X1 = (200,150,225,125)
-    X2 = (200,125,225,150)
+    X1 = (213,138,13)
     return [LEFT_VERTICAL, RIGHT_VERTICAL, TOP_HORIZONTAL, BOTTOM_HORIZONTAL,\
-            X1,X2]
+            X1]
 
 def contents(S):
     """
