@@ -108,7 +108,7 @@ def successor_state(S,P):
     return S
 
 def game_over(S):
-    return has_won('x',S) or has_won('o',S)
+    return has_won('x',S) or has_won('o',S) or tie(S)
 
 def has_won(P,S):
     
