@@ -63,7 +63,7 @@ def contents(S):
     """
     What gets drawn based on the state of the game
     """
-    if S['STATE'] == False:
+    if S['STATE'] == 0:
         A = [('Press to start the game',240,460,20),(200,440,280,410,YELLOW),\
              ('START', 240, 425, 15), ('Select the game mode:', 440, 345,20)]
         if S['MODE'] == 0:
