@@ -21,10 +21,12 @@ def initial_state():
     vs a medium AI, and 3 is single player vs a Hard AI.
     S['STATE'] denotes the current state of the game. 0 means that the player
     is still selecting the mode of the game. 1 means that the game is currently
-    in progress, and 2 means that the game is over.
+    in progress, and 3 means that the game is over and the user is selecting
+    whether or not they want to play another game.  4 means that the game is
+    over and the program will automatically exit.
     S['MISS'] denotes whether the previous click was an invalid input or not.
     """
-    return {'x':set(), 'o':{2}, 'MODE':0, 'STATE':0, 'MISS': False}
+    return {'x':set(), 'o':set(), 'MODE':0, 'STATE':0, 'MISS': False}
 
 def images(S):
     """
@@ -43,26 +45,6 @@ def background():
 def contents(S):
     """
     What gets drawn based on the state of the game
-    
-    Cell 0 X = (50,300, 75,275),(50,275,75,300)
-    Cell 0 O = (62,287,13)
-    Cell 1 X = (125,300, 150,275),(125,275,150,300)
-    Cell 1 O = (137,287,13)
-    Cell 2 X = (200,300, 225,275),(200,275,225,300)
-    Cell 2 O = (213,287,13)
-    Cell 3 X = (50,225,75,200),(50,200,75,225)
-    Cell 3 O = (62,213,13)
-    Cell 4 X = (125,225,150,200),(125,200,150,225)
-    Cell 4 O = (137,213,13)
-    Cell 5 X = (200,225,225,200),(200,200,225,225)
-    Cell 5 O = (213,213,13)
-    Cell 6 X = (50,150,75,125),(50,125,75,150)
-    Cell 6 O = (62,138,13)
-    Cell 7 X = (125,150,150,125),(125,125,150,150)
-    Cell 7 O = (137,138,13)
-    Cell 8 X = (200,150,225,125),(200,125,225,150)
-    Cell 8 O = (213,138,13)
-    
     """
     if S['STATE'] == 0:
         A = [('Press to start the game',240,460,20),(200,440,280,410,YELLOW),\
@@ -134,10 +116,11 @@ def contents(S):
             c.append((137,138,13))
         if(S['o'] >= {8}):
             c.append((213,138,13))
+    if(S['STATE'] == 1):
         if(len(S['x'] | S['o'])%2 == 0):
             c.append(('Player X\'s turn',430,320,20))
         else:
-            c.append(('PlayerO\'s turn',430,320,20))
+            c.append(('Player O\'s turn',430,320,20))
             
         return c
     else:
