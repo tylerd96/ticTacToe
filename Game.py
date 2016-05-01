@@ -121,6 +121,9 @@ def contents(S):
             c.append(('Player X\'s turn',430,320,20))
         else:
             c.append(('Player O\'s turn',430,320,20))
+        if(S['MISS']):
+            c.append(('Not a valid move',240,460,20))
+            return c
             
         return c
     else:
@@ -138,6 +141,12 @@ def successor_state(S,P):
             S['MODE'] = 3
        if(in_Start(P)):
            S['STATE'] = 1
+    if(S['STATE'] == 1):
+        S['MISS'] = False
+        if(not in_board(P)):
+            S['MISS'] = True
+        else:
+            print(get_cell(P))
     else:
         print('hello')
     return S
@@ -180,8 +189,34 @@ def in_Med(P):
 def in_Hard(P):
     (x,y) = P
     return 380 <= x <= 500 and 165 <= y <= 195
+
 def in_Start(P):
     (x,y) = P
     return 200 <= x <= 280 and 410 <= y <= 440
+
+def in_board(P):
+    (x,y) = P
+    return 25 <= x <= 250 and 100 <= y <= 325
+
+def get_cell(P):
+    (x,y) = P
+    if(25 <= x <= 100 and 250 <= y <= 325):
+        return 0
+    if(100 <= x <= 175 and 250 <= y <= 325):
+        return 1
+    if(175 <= x <= 250 and 250 <= y <= 325):
+        return 2
+    if(25 <= x <= 100 and 175 <= y <= 250):
+        return 3
+    if(100 <= x <= 175 and 175 <= y <= 250):
+        return 4
+    if(175 <= x <= 250 and 175 <= y <= 250):
+        return 5
+    if(25 <= x <= 100 and 100 <= y <= 175):
+        return 6
+    if(100 <= x <= 175 and 100 <= y <= 175):
+        return 7
+    if(175 <= x <= 250 and 100 <= y <= 175):
+        return 8
 
 run_game(game_title, initial_state, successor_state, game_over, images)
