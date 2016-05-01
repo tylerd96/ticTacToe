@@ -24,7 +24,7 @@ def initial_state():
     in progress, and 2 means that the game is over.
     S['MISS'] denotes whether the previous click was an invalid input or not.
     """
-    return {'x':set(),'o':set(), 'MODE':0, 'STATE':0, 'MISS': False}
+    return {'x':set(), 'o':{2}, 'MODE':0, 'STATE':0, 'MISS': False}
 
 def images(S):
     """
@@ -33,7 +33,17 @@ def images(S):
     return background() + contents(S)
 
 def background():
+    
+    LEFT_VERTICAL = (100,100,100,325)
+    RIGHT_VERTICAL = (175,100,175,325)
+    TOP_HORIZONTAL = (25,250,250,250)
+    BOTTOM_HORIZONTAL = (25,175,250,175)
+    return [LEFT_VERTICAL, RIGHT_VERTICAL, TOP_HORIZONTAL, BOTTOM_HORIZONTAL]
+
+def contents(S):
     """
+    What gets drawn based on the state of the game
+    
     Cell 0 X = (50,300, 75,275),(50,275,75,300)
     Cell 0 O = (62,287,13)
     Cell 1 X = (125,300, 150,275),(125,275,150,300)
@@ -52,19 +62,7 @@ def background():
     Cell 7 O = (137,138,13)
     Cell 8 X = (200,150,225,125),(200,125,225,150)
     Cell 8 O = (213,138,13)
-    """
-    LEFT_VERTICAL = (100,100,100,325)
-    RIGHT_VERTICAL = (175,100,175,325)
-    TOP_HORIZONTAL = (25,250,250,250)
-    BOTTOM_HORIZONTAL = (25,175,250,175)
-    X1 = (50,300,75,275)
-    X2 = (50,275,75,300)
-    return [LEFT_VERTICAL, RIGHT_VERTICAL, TOP_HORIZONTAL, BOTTOM_HORIZONTAL,
-            X1,X2]
-
-def contents(S):
-    """
-    What gets drawn based on the state of the game
+    
     """
     if S['STATE'] == 0:
         A = [('Press to start the game',240,460,20),(200,440,280,410,YELLOW),\
@@ -89,8 +87,59 @@ def contents(S):
                      (380,275,500,245,RED), ('VS. Easy AI', 440,260,13),\
                      (380,235,500,205,RED), ('VS. Medium AI', 440,220,13),\
                      (380,195,500,165,GREEN), ('VS. Hard AI', 440,180,13)]
-
-        
+    if S['STATE'] >= 1:
+        c = []
+        if(S['x'] >= {0}):
+            c.append((50,300, 75,275))
+            c.append((50,275,75,300))
+        if(S['x'] >= {1}):
+            c.append((125,300, 150,275))
+            c.append((125,275,150,300))
+        if(S['x'] >= {2}):
+            c.append((200,300, 225,275))
+            c.append((200,275,225,300))
+        if(S['x'] >= {3}):
+            c.append((50,225,75,200))
+            c.append((50,200,75,225))
+        if(S['x'] >= {4}):
+            c.append((125,225,150,200))
+            c.append((125,200,150,225))
+        if(S['x'] >= {5}):
+            c.append((200,225,225,200))
+            c.append((200,200,225,225))
+        if(S['x'] >= {6}):
+            c.append((50,150,75,125))
+            c.append((50,125,75,150))
+        if(S['x'] >= {7}):
+            c.append((125,150,150,125))
+            c.append((125,125,150,150))
+        if(S['x'] >= {8}):
+            c.append((200,150,225,125))
+            c.append((200,125,225,150))
+        if(S['o'] >= {0}):
+            c.append((62,287,13))
+        if(S['o'] >= {1}):
+            c.append((137,287,13))
+        if(S['o'] >= {2}):
+            c.append((213,287,13))
+        if(S['o'] >= {3}):
+            c.append((62,213,13))
+        if(S['o'] >= {4}):
+            c.append((137,213,13))
+        if(S['o'] >= {5}):
+            c.append((213,213,13))
+        if(S['o'] >= {6}):
+            c.append((62,138,13))
+        if(S['o'] >= {7}):
+            c.append((137,138,13))
+        if(S['o'] >= {8}):
+            c.append((213,138,13))
+        if(len(S['x'] | S['o'])%2 == 0):
+            c.append(('Player X\'s turn',430,320,20))
+        else:
+            c.append(('PlayerO\'s turn',430,320,20))
+            
+        return c
     else:
         return []
 
