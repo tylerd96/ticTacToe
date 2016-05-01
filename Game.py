@@ -146,7 +146,10 @@ def successor_state(S,P):
         if(not in_board(P)):
             S['MISS'] = True
         else:
-            print(get_cell(P))
+            Cell = get_cell(P)
+            print(is_open(Cell,S))
+            if(is_open(Cell,S)):
+                make_move(Cell,S)
     else:
         print('hello')
     return S
@@ -218,5 +221,13 @@ def get_cell(P):
         return 7
     if(175 <= x <= 250 and 100 <= y <= 175):
         return 8
+def is_open(C,S):
+    return not {C} <= S['x'] | S['o']
+
+def make_move(C,S):
+    if(len(S['x'] | S['o'])%2 == 0):
+        S['x'].add(C)
+    else:
+        S['o'].add(C)
 
 run_game(game_title, initial_state, successor_state, game_over, images)
