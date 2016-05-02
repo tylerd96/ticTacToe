@@ -1,4 +1,5 @@
 from tpge import *
+from random import randint
 
 GAME_START = False
 GAME_MODE = 0
@@ -117,14 +118,24 @@ def contents(S):
         if(S['o'] >= {8}):
             c.append((213,138,13))
     if(S['STATE'] == 1):
-        if(len(S['x'] | S['o'])%2 == 0 and len(S['x'] | S['o'])!=9):
-            c.append(('Player X\'s turn',430,320,20))
-        else:
-            c.append(('Player O\'s turn',430,320,20))
-        if(S['MISS']):
-            c.append(('Not a valid move',240,460,20))
-            S['MISS'] = False
-        return c
+        if(S['MODE'] == 0):
+            if(len(S['x'] | S['o'])%2 == 0 and len(S['x'] | S['o'])!=9):
+                c.append(('Player X\'s turn',430,320,20))
+            else:
+                c.append(('Player O\'s turn',430,320,20))
+            if(S['MISS']):
+                c.append(('Not a valid move',240,460,20))
+                S['MISS'] = False
+            return c
+        if(S['MODE'] > 0):
+            if(len(S['x'] | S['o'])%2 ==0 and len(S['x'] | S['o'])!=9):
+               c.append(('Player X\'s turn',430,320,20))
+            else:
+               c.append(('Click for the computer to make his move',430,320,20))
+            if(S['MISS']):
+               c.append(('Not a valid move',240,460,20))
+               S['MISS'] = False
+            return c
         
     if(S['STATE'] == 2):
         c.append(('Play again?',430,250,20))
@@ -172,7 +183,28 @@ def successor_state(S,P):
                     S['MISS'] = True
             if(has_won('x',S) or has_won('o',S) or tie(S)):
                S['STATE'] = 2
-        
+        if(S['MODE'] == 1):
+            if(len(S['x'] | S['o'])%2 == 0):
+                if(not in_board(P)):
+                   S['MISS'] = True
+                else:
+                   Cell = get_cell(P)
+                   if(is_open(Cell,S)):
+                     make_move(Cell,S)
+                   else:
+                     S['MISS'] = True
+            else:
+                  Cell = -1
+                  while Cell == -1 or not is_open(Cell,S):
+                      Cell = randint(0,8)
+                         
+                  make_move(Cell,S)
+                  print(Cell)
+            if(has_won('x',S) or has_won('o',S) or tie(S)):
+                S['STATE'] = 2
+
+
+            
     if(S['STATE'] == 2):
         if(in_ngNo(P)):
             S['STATE'] = 3
