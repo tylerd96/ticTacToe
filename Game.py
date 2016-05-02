@@ -117,15 +117,34 @@ def contents(S):
         if(S['o'] >= {8}):
             c.append((213,138,13))
     if(S['STATE'] == 1):
-        if(len(S['x'] | S['o'])%2 == 0):
+        if(len(S['x'] | S['o'])%2 == 0 and len(S['x'] | S['o'])!=9):
             c.append(('Player X\'s turn',430,320,20))
         else:
             c.append(('Player O\'s turn',430,320,20))
         if(S['MISS']):
             c.append(('Not a valid move',240,460,20))
-            return c
-            
+            S['MISS'] = False
         return c
+        
+    if(S['STATE'] == 2):
+        c.append(('Play again?',430,250,20))
+        c.append((320,230,420,200,GREEN))
+        c.append((440,230,540,200,RED))
+        c.append(('Yes',370,215,15))
+        c.append(('No',490,215,15))
+
+
+        
+        if(has_won('x',S)):
+            c.append(('Player X has won',430,320,20))
+            return c
+        if(has_won('o',S)):
+            c.append(('Player O has won',430,320,20))
+            return c
+        else:
+            c.append(('The game is a tie',430,320,20))
+            return c
+        
     else:
         return []
 
@@ -142,20 +161,26 @@ def successor_state(S,P):
        if(in_Start(P)):
            S['STATE'] = 1
     if(S['STATE'] == 1):
-        S['MISS'] = False
         if(not in_board(P)):
             S['MISS'] = True
         else:
             Cell = get_cell(P)
-            print(is_open(Cell,S))
             if(is_open(Cell,S)):
                 make_move(Cell,S)
+            else:
+                S['MISS'] = True
+        if(has_won('x',S) or has_won('o',S) or tie(S)):
+            print('h')
+            S['STATE'] = 2
+    if(S['STATE'] == 2):
+
+        print('hi')
     else:
         print('hello')
     return S
 
 def game_over(S):
-    return has_won('x',S) or has_won('o',S) or tie(S)
+    return S['STATE'] >= 4
 
 def has_won(P,S):
     
