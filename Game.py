@@ -132,7 +132,7 @@ def contents(S):
         c.append((440,230,540,200,RED))
         c.append(('Yes',370,215,15))
         c.append(('No',490,215,15))
-
+    
 
         
         if(has_won('x',S)):
@@ -161,26 +161,31 @@ def successor_state(S,P):
        if(in_Start(P)):
            S['STATE'] = 1
     if(S['STATE'] == 1):
-        if(not in_board(P)):
-            S['MISS'] = True
-        else:
-            Cell = get_cell(P)
-            if(is_open(Cell,S)):
-                make_move(Cell,S)
+        if(S['MODE'] == 0):
+            if(not in_board(P)):
+               S['MISS'] = True
             else:
-                S['MISS'] = True
-        if(has_won('x',S) or has_won('o',S) or tie(S)):
-            print('h')
-            S['STATE'] = 2
+                Cell = get_cell(P)
+                if(is_open(Cell,S)):
+                    make_move(Cell,S)
+                else:
+                    S['MISS'] = True
+            if(has_won('x',S) or has_won('o',S) or tie(S)):
+               S['STATE'] = 2
+        
     if(S['STATE'] == 2):
-
-        print('hi')
-    else:
-        print('hello')
+        if(in_ngNo(P)):
+            S['STATE'] = 3
+        if(in_ngYes(P)):
+            S['STATE'] = 3
+            run_game(game_title, initial_state, successor_state, game_over, images)
+        
+    
+        
     return S
 
 def game_over(S):
-    return S['STATE'] >= 4
+    return S['STATE'] >= 3
 
 def has_won(P,S):
     
@@ -254,5 +259,12 @@ def make_move(C,S):
         S['x'].add(C)
     else:
         S['o'].add(C)
+def in_ngYes(P):
+    (x,y) = P
+    return 320 <= x <=420 and 200 <= y <= 230
+
+def in_ngNo(P):
+    (x,y) = P
+    return 440 <= x <= 540 and 200 <= y <= 230
 
 run_game(game_title, initial_state, successor_state, game_over, images)
