@@ -131,7 +131,7 @@ def contents(S):
             if(len(S['x'] | S['o'])%2 ==0 and len(S['x'] | S['o'])!=9):
                c.append(('Player X\'s turn',430,320,20))
             else:
-               c.append(('Click for the computer to make his move',430,320,20))
+               c.append(('Click anywhere for the computer to make his move',320,430,19))
             if(S['MISS']):
                c.append(('Not a valid move',240,460,20))
                S['MISS'] = False
@@ -199,10 +199,30 @@ def successor_state(S,P):
                       Cell = randint(0,8)
                          
                   make_move(Cell,S)
-                  print(Cell)
             if(has_won('x',S) or has_won('o',S) or tie(S)):
                 S['STATE'] = 2
-
+        if(S['MODE'] == 2):
+            if(len(S['x'] | S['o'])%2 == 0):
+                if(not in_board(P)):
+                    S['MISS'] = True
+                else:
+                    Cell = get_cell(P)
+                    if(is_open(Cell,S)):
+                       make_move(Cell,S)
+                    else:
+                        S['MISS'] = True
+            else:
+                if(about_to_win('x',S,'o')):
+                   Cell = get_block('x',S,'o')
+                   if(Cell != -1):
+                       make_move(Cell,S)
+                else:
+                    Cell = -1
+                    while Cell == -1 or not is_open(Cell,S):
+                        Cell = randint(0,8)
+                    make_move(Cell,S)
+            if(has_won('x',S) or has_won('o',S) or tie(S)):
+                S['STATE'] = 2
 
             
     if(S['STATE'] == 2):
@@ -298,5 +318,74 @@ def in_ngYes(P):
 def in_ngNo(P):
     (x,y) = P
     return 440 <= x <= 540 and 200 <= y <= 230
+
+def about_to_win(P,S,O):
+    return atw_diagonally(P,S,O) or atw_horizontally(P,S,O) or\
+           atw_vertically(P,S,O)
+
+def atw_diagonally(P,S,O):
+    return {0,4} <= S[P] and not {8} <= S[O] or\
+           {0,8} <= S[P] and not {4} <= S[O] or\
+           {4,8} <= S[P] and not {0} <= S[O] or\
+           {6,4} <= S[P] and not {2} <= S[O] or\
+           {6,2} <= S[P] and not {4} <= S[O] or\
+           {4,2} <= S[P] and not {6} <= S[O]
+def atw_horizontally(P,S,O):
+    return {0,1} <= S[P] and not {2} <= S[O] or\
+           {0,2} <= S[P] and not {1} <= S[O] or\
+           {1,2} <= S[P] and not {0} <= S[O] or\
+           {3,4} <= S[P] and not {5} <= S[O] or\
+           {3,5} <= S[P] and not {4} <= S[O] or\
+           {4,5} <= S[P] and not {3} <= S[O] or\
+           {6,7} <= S[P] and not {8} <= S[O] or\
+           {6,8} <= S[P] and not {7} <= S[O] or\
+           {7,8} <= S[P] and not {6} <= S[O]
+def atw_vertically(P,S,O):
+    return {0,3} <= S[P] and not {6} <= S[O] or\
+           {0,6} <= S[P] and not {3} <= S[O] or\
+           {3,6} <= S[P] and not {0} <= S[O] or\
+           {1,4} <= S[P] and not {7} <= S[O] or\
+           {1,7} <= S[P] and not {4} <= S[O] or\
+           {4,7} <= S[P] and not {1} <= S[O] or\
+           {2,5} <= S[P] and not {8} <= S[O] or\
+           {2,8} <= S[P] and not {5} <= S[O] or\
+           {5,8} <= S[P] and not {2} <= S[O]
+def get_block(P,S,O):
+    if({0,8} <= S[P] and not {4} <= S[O] or\
+       {6,2} <= S[P] and not {4} <= S[O] or\
+       {3,5} <= S[P] and not {4} <= S[O] or\
+       {1,7} <= S[P] and not {4} <= S[O]):
+        return 4
+    if({4,8} <= S[P] and not {0} <= S[O] or\
+       {1,2} <= S[P] and not {0} <= S[O] or\
+       {3,6} <= S[P] and not {0} <= S[O]):
+        return 0
+    if({6,4} <= S[P] and not {2} <= S[O] or\
+       {0,1} <= S[P] and not {2} <= S[O] or\
+       {5,8} <= S[P] and not {2} <= S[O]):
+        return 2
+    if({0,4} <= S[P] and not {8} <= S[O] or\
+       {6,7} <= S[P] and not {8} <= S[O] or\
+       {2,5} <= S[P] and not {8} <= S[O]):
+        return 8
+    if({4,2} <= S[P] and not {6} <= S[O] or\
+       {7,8} <= S[P] and not {6} <= S[O] or\
+       {0,3} <= S[P] and not {6} <= S[O]):
+        return 6
+    if({0,2} <= S[P] and not {1} <= S[O] or\
+       {4,7} <= S[P] and not {1} <= S[O]):
+        return 1
+    if({4,5} <= S[P] and not {3} <= S[O] or\
+       {0,6} <= S[P] and not {3} <= S[O]):
+        return 3
+    if({3,4} <= S[P] and not {5} <= S[O] or\
+       {2,8} <= S[P] and not {5} <= S[O]):
+        return 5
+    if({6,8} <= S[P] and not {7} <= S[O] or\
+       {1,4} <= S[P] and not {7} <= S[O]):
+        return 7
+    
+    return -1
+
 
 run_game(game_title, initial_state, successor_state, game_over, images)
