@@ -7,12 +7,14 @@ GAME_MODE = 0
 
 def game_title():
     """
+    game_Title : String
     Returns the name of the game which is "Tic Tac Toe".
     """
     return "Tic Tac Toe"
 
 def initial_state():
     """
+    initial_state: State
     Returns the initial state of the game.
     S['x'] denotes the cells that
     player x ownes.
@@ -31,12 +33,15 @@ def initial_state():
 
 def images(S):
     """
+    images : State -> Image List
     Returns the image list that will be drawn on the screen of the game
     """
     return background() + contents(S)
 
 def background():
-    
+    """
+    background : Image List
+    """
     LEFT_VERTICAL = (100,100,100,325)
     RIGHT_VERTICAL = (175,100,175,325)
     TOP_HORIZONTAL = (25,250,250,250)
@@ -45,6 +50,7 @@ def background():
 
 def contents(S):
     """
+    contents : State -> Image List
     What gets drawn based on the state of the game
     """
     if S['STATE'] == 0:
@@ -160,6 +166,9 @@ def contents(S):
         return []
 
 def successor_state(S,P):
+    """
+    successor_state : State x Point -> State
+    """
     if(S['STATE'] == 0):
        if(in_2Player(P)):
            S['MODE'] = 0
@@ -212,8 +221,8 @@ def successor_state(S,P):
                     else:
                         S['MISS'] = True
             else:
-                if(about_to_win('x',S,'o')):
-                   Cell = get_block('x',S,'o')
+                if(about_to_win('x',S)):
+                   Cell = get_block('x',S)
                    if(Cell != -1):
                        make_move(Cell,S)
                 else:
@@ -237,53 +246,91 @@ def successor_state(S,P):
     return S
 
 def game_over(S):
+    """
+    game_over : State -> Boolean
+    """
     return S['STATE'] >= 3
 
 def has_won(P,S):
-    
+    """
+    has_won : Player x State -> Boolean
+    """
     return won_vertically(P,S) or won_horizontally(P,S) or won_diagonally(P,S)
 
 def won_vertically(P,S):
+    """
+    won_vertically : Player x State -> Boolean
+    """
     return {0,3,6} <= S[P] or\
            {1,4,7} <= S[P] or\
            {2,5,8} <= S[P]
 
 def won_horizontally(P,S):
+    """
+    won_horizontally : Player x State -> Boolean
+    """
     return {0,1,2} <= S[P] or\
            {3,4,5} <= S[P] or\
            {6,7,8} <= S[P]
 
 def won_diagonally(P,S):
+    """
+    won_diagonally : Player x State -> Boolean
+    """
     return {0,4,8} <= S[P] or\
            {2,4,6} <= S[P]
 def tie(S):
+    """
+    tie : State -> Boolean
+    """
     return 9 == len(S['x'] | S['o'])
 
 def in_2Player(P):
+    """
+    in_2Player : Point -> Boolean
+    """
     (x,y) = P
     return 380 <= x <= 500 and 285 <= y <= 315
 
 def in_Easy(P):
+    """
+    in_Easy : Point -> Boolean
+    """
     (x,y) = P
     return 380 <= x <= 500 and 245 <= y <= 275
 
 def in_Med(P):
+    """
+    in_Med : Point -> Boolean
+    """
     (x,y) = P
     return 380 <= x <= 500 and 205 <= y <= 235
 
 def in_Hard(P):
+    """
+    in_Hard : Point -> Boolean
+    """
     (x,y) = P
     return 380 <= x <= 500 and 165 <= y <= 195
 
 def in_Start(P):
+    """
+    in_Start : Point -> Boolean
+    """
     (x,y) = P
     return 200 <= x <= 280 and 410 <= y <= 440
 
 def in_board(P):
+    """
+    in_board : Point -> Boolean
+    """
     (x,y) = P
     return 25 <= x <= 250 and 100 <= y <= 325
 
 def get_cell(P):
+    """
+    get_cell : Point -> Cell
+    """
     (x,y) = P
     if(25 <= x <= 100 and 250 <= y <= 325):
         return 0
@@ -303,34 +350,53 @@ def get_cell(P):
         return 7
     if(175 <= x <= 250 and 100 <= y <= 175):
         return 8
+    
 def is_open(C,S):
+    """
+    is_open : Cell x State -> Boolean
+    """
     return not {C} <= S['x'] | S['o']
 
 def make_move(C,S):
+    """
+    make_move : Cell x State
+    """
     if(len(S['x'] | S['o'])%2 == 0):
         S['x'].add(C)
     else:
         S['o'].add(C)
+        
 def in_ngYes(P):
+    """
+    in_ngYes : Point -> Boolean
+    """
     (x,y) = P
     return 320 <= x <=420 and 200 <= y <= 230
 
 def in_ngNo(P):
+    """
+    in_ngNo : Point -> Boolean
+    """
     (x,y) = P
     return 440 <= x <= 540 and 200 <= y <= 230
 
-def about_to_win(P,S,O):
-    return atw_diagonally(P,S,O) or atw_horizontally(P,S,O) or\
-           atw_vertically(P,S,O)
+def about_to_win(P,S):
+    """
+    about_to_win
+    """
+    return atw_diagonally(P,S) or atw_horizontally(P,S) or\
+           atw_vertically(P,S)
 
-def atw_diagonally(P,S,O):
+def atw_diagonally(P,S):
+    O = 'o' if P == 'x' else 'x'
     return {0,4} <= S[P] and not {8} <= S[O] or\
            {0,8} <= S[P] and not {4} <= S[O] or\
            {4,8} <= S[P] and not {0} <= S[O] or\
            {6,4} <= S[P] and not {2} <= S[O] or\
            {6,2} <= S[P] and not {4} <= S[O] or\
            {4,2} <= S[P] and not {6} <= S[O]
-def atw_horizontally(P,S,O):
+def atw_horizontally(P,S):
+    O = 'o' if P == 'x' else 'x'
     return {0,1} <= S[P] and not {2} <= S[O] or\
            {0,2} <= S[P] and not {1} <= S[O] or\
            {1,2} <= S[P] and not {0} <= S[O] or\
@@ -340,7 +406,8 @@ def atw_horizontally(P,S,O):
            {6,7} <= S[P] and not {8} <= S[O] or\
            {6,8} <= S[P] and not {7} <= S[O] or\
            {7,8} <= S[P] and not {6} <= S[O]
-def atw_vertically(P,S,O):
+def atw_vertically(P,S):
+    O = 'o' if P == 'x' else 'x'
     return {0,3} <= S[P] and not {6} <= S[O] or\
            {0,6} <= S[P] and not {3} <= S[O] or\
            {3,6} <= S[P] and not {0} <= S[O] or\
@@ -350,7 +417,9 @@ def atw_vertically(P,S,O):
            {2,5} <= S[P] and not {8} <= S[O] or\
            {2,8} <= S[P] and not {5} <= S[O] or\
            {5,8} <= S[P] and not {2} <= S[O]
-def get_block(P,S,O):
+
+def get_block(P,S):
+    O = 'o' if P == 'x' else 'x'
     if({0,8} <= S[P] and not {4} <= S[O] or\
        {6,2} <= S[P] and not {4} <= S[O] or\
        {3,5} <= S[P] and not {4} <= S[O] or\
@@ -387,5 +456,9 @@ def get_block(P,S,O):
     
     return -1
 
+def score(S):
+    return 10 if has_won('x',S) else\
+           -10 if has_won('o',S) else\
+           0 
 
 run_game(game_title, initial_state, successor_state, game_over, images)
