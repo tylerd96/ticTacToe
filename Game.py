@@ -1,5 +1,6 @@
 from tpge import *
 from random import randint
+from copy import deepcopy
 
 GAME_START = False
 GAME_MODE = 0
@@ -232,7 +233,23 @@ def successor_state(S,P):
                     make_move(Cell,S)
             if(has_won('x',S) or has_won('o',S) or tie(S)):
                 S['STATE'] = 2
-
+        if(S['MODE'] ==3):
+            if(len(S['x'] | S['o'])%2 ==0):
+                if(not in_board(P)):
+                    S['MISS'] = True
+                else:
+                    Cell = get_cell(P)
+                    if(is_open(Cell,S)):
+                        make_move(Cell,S)
+                    else:
+                        S['MISS'] = True
+            else:
+                print(minimax(S))
+                print(S)
+                make_move(minimax(S),S)
+                
+            if(has_won('x',S) or has_won('o',S) or tie(S)):
+                S['STATE'] = 2
             
     if(S['STATE'] == 2):
         if(in_ngNo(P)):
@@ -382,12 +399,15 @@ def in_ngNo(P):
 
 def about_to_win(P,S):
     """
-    about_to_win
+    about_to_win : Player x State -> Boolean
     """
     return atw_diagonally(P,S) or atw_horizontally(P,S) or\
            atw_vertically(P,S)
 
 def atw_diagonally(P,S):
+    """
+    atw_diagonally : Player x State -> Boolean
+    """
     O = 'o' if P == 'x' else 'x'
     return {0,4} <= S[P] and not {8} <= S[O] or\
            {0,8} <= S[P] and not {4} <= S[O] or\
@@ -396,6 +416,9 @@ def atw_diagonally(P,S):
            {6,2} <= S[P] and not {4} <= S[O] or\
            {4,2} <= S[P] and not {6} <= S[O]
 def atw_horizontally(P,S):
+    """
+    atw_horizonatlly : Player x State -> Boolean
+    """
     O = 'o' if P == 'x' else 'x'
     return {0,1} <= S[P] and not {2} <= S[O] or\
            {0,2} <= S[P] and not {1} <= S[O] or\
@@ -407,6 +430,9 @@ def atw_horizontally(P,S):
            {6,8} <= S[P] and not {7} <= S[O] or\
            {7,8} <= S[P] and not {6} <= S[O]
 def atw_vertically(P,S):
+    """
+    atw_vertically : Player x State -> Boolean
+    """
     O = 'o' if P == 'x' else 'x'
     return {0,3} <= S[P] and not {6} <= S[O] or\
            {0,6} <= S[P] and not {3} <= S[O] or\
@@ -419,6 +445,9 @@ def atw_vertically(P,S):
            {5,8} <= S[P] and not {2} <= S[O]
 
 def get_block(P,S):
+    """
+    get_block : Player x State -> Cell
+    """
     O = 'o' if P == 'x' else 'x'
     if({0,8} <= S[P] and not {4} <= S[O] or\
        {6,2} <= S[P] and not {4} <= S[O] or\
@@ -457,8 +486,51 @@ def get_block(P,S):
     return -1
 
 def score(S):
+    """
+    score : State -> Score
+    """
     return 10 if has_won('x',S) else\
            -10 if has_won('o',S) else\
            0 
+
+def minimax(S):
+    """
+    minimax : State -> Cell
+    """
+    if(has_won('x',S) or has_won('o',S) or tie(S)):
+        return score(S)
+    
+    scores = []
+    moves = []
+    Z = deepcopy(S)
+    for m in possible_moves(S):
+        Z = successor(m,Z)
+        scores.append(minimax(Z))
+        moves.append(m)
+    
+    if len(S['x'] | S['o'])%2 == 0:
+        last = scores[0]
+        for m in scores:
+            m = last if m<last else m
+        return moves[scores.index(m)]
+    else:
+        last = scores[0]
+        for m in scores:
+            m = last if m>last else m
+        return moves[0]
+    
+def possible_moves(S):
+    """
+    possible_moves : State -> Open Cells
+    """
+    return {0,1,2,3,4,5,6,7,8} - (S['o'] | S['x'])
+
+def successor(C,S):
+    """
+    successor : Cell x State -> State
+    """
+    Z = S
+    make_move(C,Z)
+    return Z
 
 run_game(game_title, initial_state, successor_state, game_over, images)
