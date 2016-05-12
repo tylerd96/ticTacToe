@@ -489,8 +489,8 @@ def score(S):
     """
     score : State -> Score
     """
-    return 10 if has_won('x',S) else\
-           -10 if has_won('o',S) else\
+    return -10 if has_won('x',S) else\
+           10 if has_won('o',S) else\
            0 
 
 def minimax(S):
@@ -504,20 +504,19 @@ def minimax(S):
     moves = []
     Z = deepcopy(S)
     for m in possible_moves(S):
-        Z = successor(m,Z)
-        scores.append(minimax(Z))
+        N = successor(m,Z)
+        scores.append(minimax(N))
         moves.append(m)
     
-    if len(S['x'] | S['o'])%2 == 0:
-        last = scores[0]
-        for m in scores:
-            m = last if m<last else m
-        return moves[scores.index(m)]
+    if len(S['x'] | S['o'])%2 != 0:
+        max_score = max(scores)
+        idx = scores.index(max_score)
+        return moves[idx]
     else:
-        last = scores[0]
-        for m in scores:
-            m = last if m>last else m
-        return moves[0]
+        min_score = min(scores)
+        idx = scores.index(min_score)
+        return moves[idx]
+
     
 def possible_moves(S):
     """
@@ -529,8 +528,7 @@ def successor(C,S):
     """
     successor : Cell x State -> State
     """
-    Z = S
-    make_move(C,Z)
-    return Z
+    make_move(C,S)
+    return S
 
 run_game(game_title, initial_state, successor_state, game_over, images)
