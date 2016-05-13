@@ -2,6 +2,9 @@ from tpge import *
 from random import randint
 from copy import deepcopy
 
+# By: Tyler Davis and Nikhil Sutliff
+# CSE 102 Final Lecture Project
+
 GAME_START = False
 GAME_MODE = 0
 
