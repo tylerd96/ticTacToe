@@ -170,6 +170,7 @@ def successor_state(S,P):
     """
     successor_state : State x Point -> State
     """
+    # Initial State of the game (Selection Phase)
     if(S['STATE'] == 0):
        if(in_2Player(P)):
            S['MODE'] = 0
@@ -181,7 +182,11 @@ def successor_state(S,P):
             S['MODE'] = 3
        if(in_Start(P)):
            S['STATE'] = 1
+           
+    # Game is now under way
     if(S['STATE'] == 1):
+        
+        # Two player Game
         if(S['MODE'] == 0):
             if(not in_board(P)):
                S['MISS'] = True
@@ -193,6 +198,8 @@ def successor_state(S,P):
                     S['MISS'] = True
             if(has_won('x',S) or has_won('o',S) or tie(S)):
                S['STATE'] = 2
+               
+        # Easy AI mode
         if(S['MODE'] == 1):
             if(len(S['x'] | S['o'])%2 == 0):
                 if(not in_board(P)):
@@ -211,6 +218,8 @@ def successor_state(S,P):
                   make_move(Cell,S)
             if(has_won('x',S) or has_won('o',S) or tie(S)):
                 S['STATE'] = 2
+                
+        # Medium AI mode
         if(S['MODE'] == 2):
             if(len(S['x'] | S['o'])%2 == 0):
                 if(not in_board(P)):
@@ -233,6 +242,8 @@ def successor_state(S,P):
                     make_move(Cell,S)
             if(has_won('x',S) or has_won('o',S) or tie(S)):
                 S['STATE'] = 2
+                
+        # Hard AI mode
         if(S['MODE'] ==3):
             if(len(S['x'] | S['o'])%2 ==0):
                 if(not in_board(P)):
@@ -250,15 +261,14 @@ def successor_state(S,P):
                 
             if(has_won('x',S) or has_won('o',S) or tie(S)):
                 S['STATE'] = 2
-            
+                
+    # Game is over asking if you want to play again
     if(S['STATE'] == 2):
         if(in_ngNo(P)):
             S['STATE'] = 3
         if(in_ngYes(P)):
             S['STATE'] = 3
             run_game(game_title, initial_state, successor_state, game_over, images)
-        
-    
         
     return S
 
