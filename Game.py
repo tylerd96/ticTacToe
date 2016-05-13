@@ -24,8 +24,8 @@ def initial_state():
     vs a medium AI, and 3 is single player vs a Hard AI.
     S['STATE'] denotes the current state of the game. 0 means that the player
     is still selecting the mode of the game. 1 means that the game is currently
-    in progress, and 3 means that the game is over and the user is selecting
-    whether or not they want to play another game.  4 means that the game is
+    in progress, and 2 means that the game is over and the user is selecting
+    whether or not they want to play another game.  3 means that the game is
     over and the program will automatically exit.
     S['MISS'] denotes whether the previous click was an invalid input or not.
     """
